@@ -32,9 +32,9 @@ class CacheUserProvider extends EloquentUserProvider
     protected function newModelQuery($identifier = null)
     {
 
-        if(is_null($identifier)) return parent::newModelQuery();
+        if (is_null($identifier)) return parent::newModelQuery();
 
-        $model = optional($this->createModel());
+        $model  = $this->createModel();
         $second = $model->getAuthIdentifierName() ?? 'every';
 
         $key = (config('cache-user.cache_channel') === 'every')
@@ -43,9 +43,17 @@ class CacheUserProvider extends EloquentUserProvider
 
         return Cache::remember($key, $this->_ttl,
             function () use ($model, $identifier) {
+
+                $with = collect(explode(',', config('cache-user.model_with')))
+                    ->filter()->toArray();
+
+                $query = $model->when($with, function ($query) use ($with) {
+                    return $query->with($with);
+                });
+
                 return (config('cache-user.cache_channel') === 'every' && $identifier)
-                    ? $model->where($model->getAuthIdentifierName(), $identifier)->first()
-                    : $model->all();
+                    ? $query->where($model->getAuthIdentifierName(), $identifier)->first()
+                    : $query->all();
             });
 
     }
@@ -61,7 +69,7 @@ class CacheUserProvider extends EloquentUserProvider
         return (config('cache-user.cache_channel') === 'every')
             ? $this->newModelQuery($identifier)
             : $this->newModelQuery($identifier)
-                ->firstWhere(optional($this->createModel())->getAuthIdentifierName(), $identifier);
+                ->firstWhere($this->createModel()->getAuthIdentifierName(), $identifier);
     }
 
     /**
@@ -76,11 +84,11 @@ class CacheUserProvider extends EloquentUserProvider
         $retrievedModel = (config('cache-user.cache_channel') === 'every')
             ? $this->newModelQuery($identifier)
             : $this->newModelQuery($identifier)
-                ->firstWhere(optional($this->createModel())->getAuthIdentifierName(), $identifier);
+                ->firstWhere($this->createModel()->getAuthIdentifierName(), $identifier);
 
         if (!$retrievedModel) return null;
 
-        $rememberToken = optional($retrievedModel)->getRememberToken();
+        $rememberToken = $retrievedModel->getRememberToken();
 
         return $rememberToken && hash_equals($rememberToken, $token)
             ? $retrievedModel : null;

@@ -2,27 +2,8 @@
 
 namespace YangJiSen\CacheUserProvider;
 
-use Illuminate\Support\Facades\Cache;
-
 class UserObserver
 {
-    /**
-     * Handle the user "created" event.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $user
-     * @return bool
-     */
-    protected function CacheForget($user)
-    {
-        $user = optional($user);
-        $key = 'CacheUserProvider.single';
-        if(config('cache-user.cache_channel') === 'every') {
-            $second = $user->getAuthIdentifierName() ?? 'every';
-            $key = "CacheUserProvider.{$second}.{$user->{$user->getAuthIdentifierName()}}";
-        }
-        return Cache::forget($key);
-    }
-
     /**
      * Handle the user "created" event.
      *
@@ -31,7 +12,7 @@ class UserObserver
      */
     public function created($user)
     {
-        $this->CacheForget($user);
+        CacheForget::CacheForget($user);
     }
 
     /**
@@ -42,7 +23,7 @@ class UserObserver
      */
     public function updated($user)
     {
-        $this->CacheForget($user);
+        CacheForget::CacheForget($user);
     }
 
     /**
@@ -53,7 +34,7 @@ class UserObserver
      */
     public function deleted($user)
     {
-        $this->CacheForget($user);
+        CacheForget::CacheForget($user);
     }
 
 }

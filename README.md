@@ -48,7 +48,21 @@ return [
     |
     */
     'cache_channel' => env('CACHE_USER_CHANNEL', 'every'),
-
+    
+    /*
+    |--------------------------------------------------------------------------
+    | 渴望加载的关联模型
+    |--------------------------------------------------------------------------
+    |
+    | String: a,b,c
+    |
+    | 使用关联加载时,关联的数据仅在第一次查询时加载,缓存后不会自动进行更新,需要自行实现关联更新时删除缓存数据
+    |
+    | @param  \Illuminate\Database\Eloquent\Model  $user
+    | 调用删除方法: YangJiSen\CacheUserProvider\CacheForget::CacheForget($user);
+    |
+    */
+    'model_with' => env('CACHE_USER_MODEL_WITH'),
 ];
 ```
 
