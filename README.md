@@ -33,7 +33,9 @@ return [
     | 缓存的保存时间
     |--------------------------------------------------------------------------
     |
-    | 默认值:   3600
+    | 默认值(秒):   3600
+    | 注意: Laravel5.8以前缓存单位由为分钟, 此处需要自行修改时间
+    | @see https://laravel.com/docs/5.8/upgrade#cache-ttl-in-seconds
     |
     */
     'cache_ttl' => env('CACHE_USER_TTL', 3600),
