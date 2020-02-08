@@ -1,0 +1,26 @@
+{
+    "name": "yangjisen/laravel-cache-provider",
+    "license": "MIT",
+    "keywords": ["laravel", "cache", "auth", "guard"],
+    "authors": [
+        {
+            "name": "Yang Ji Sen",
+            "email": "381722452@qq.com"
+        }
+    ],
+    "require": {
+        "laravel/framework": "^5.1||^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "YangJiSen\\CacheUserProvider\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "YangJiSen\\CacheUserProvider\\ServiceProvider"
+            ]
+        }
+    }
+}
