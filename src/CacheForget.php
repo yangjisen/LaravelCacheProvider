@@ -19,8 +19,9 @@ class CacheForget
         $second = $user->getAuthIdentifierName() ?? 'every';
 
         $key = (config('cache-user.cache_channel') === 'every')
-            ? "CacheUserProvider.{$second}.{$user->{$user->getAuthIdentifierName()}}"
-            : 'CacheUserProvider.single';
+            ? "CacheUserProvider:".class_basename($model).":{$second}:{$user->{$user->getAuthIdentifierName()}}"
+            : 'CacheUserProvider:'.class_basename($model).':single';
+
 
         return Cache::forget($key);
     }

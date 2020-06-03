@@ -38,8 +38,8 @@ class CacheUserProvider extends EloquentUserProvider
         $second = $model->getAuthIdentifierName() ?? 'every';
 
         $key = (config('cache-user.cache_channel') === 'every')
-            ? "CacheUserProvider.{$second}.{$identifier}"
-            : 'CacheUserProvider.single';
+            ? "CacheUserProvider:".class_basename($model).":{$second}:{$identifier}"
+            : 'CacheUserProvider:'.class_basename($model).':single';
 
         return Cache::remember($key, $this->_ttl,
             function () use ($model, $identifier) {
@@ -73,7 +73,7 @@ class CacheUserProvider extends EloquentUserProvider
     }
 
     /**
-     * Retrieve a user by their unique identifier and "remember me" token.
+     * Retrieve a user by their unique identifier and 'remember me" token.
      *
      * @param mixed $identifier
      * @param string $token
