@@ -3,6 +3,7 @@
 
 namespace YangJiSen\CacheUserProvider;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Cache;
 
 class CacheForget
@@ -10,13 +11,12 @@ class CacheForget
     /**
      * Handle the user "created" event.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $user
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return bool
      */
-    public static function CacheForget($user)
+    public static function CacheForget(Authenticatable $user)
     {
-        $model = class_basename($user) ?? 'Model';
-        $user = optional($user);
+        $model = class_basename($user);
         $second = $user->getAuthIdentifierName() ?? 'every';
 
         $key = (config('cache-user.cache_channel') === 'every')
