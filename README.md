@@ -1,3 +1,7 @@
+### 更新日志
+* v2.1.0
+    - 修复 Undefined variable: model 错误 #2
+
 ### 安装
 
 ```shell

@@ -15,12 +15,13 @@ class CacheForget
      */
     public static function CacheForget($user)
     {
+        $model = class_basename($user) ?? 'Model';
         $user = optional($user);
         $second = $user->getAuthIdentifierName() ?? 'every';
 
         $key = (config('cache-user.cache_channel') === 'every')
-            ? "CacheUserProvider:".class_basename($model).":{$second}:{$user->{$user->getAuthIdentifierName()}}"
-            : 'CacheUserProvider:'.class_basename($model).':single';
+            ? "CacheUserProvider:{$model}:{$second}:{$user->{$user->getAuthIdentifierName()}}"
+            : "CacheUserProvider:{$model}:single";
 
 
         return Cache::forget($key);
