@@ -1,4 +1,6 @@
 ### 更新日志
+* v3.1.0
+    - 支持 Laravel10
 * v3.0.0
     - 增加模型需要实现 Illuminate\Contracts\Auth\Authenticatable 接口
 * v2.1.0
